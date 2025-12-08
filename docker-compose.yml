@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+#  db:
+#    image: postgres:16
+#    container_name: editor-db
+#    environment:
+#      POSTGRES_USER: editor
+#      POSTGRES_PASSWORD: editorpass
+#      POSTGRES_DB: editor
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./editor-back
+    container_name: editor-back
+#    environment:
+#      DB_HOST: db
+#      DB_PORT: 5432
+#      DB_USER: editor
+#      DB_PASSWORD: editorpass
+#      DB_NAME: editor
+#      PORT: 8080
+#    depends_on:
+#      - db
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./editor-front
+    container_name: editor-front
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    # если фронт обращается к беку:
+    # REACT/VITE_BASE_URL=http://localhost:8080 или http://backend:8080
+
+volumes:
+  pgdata:

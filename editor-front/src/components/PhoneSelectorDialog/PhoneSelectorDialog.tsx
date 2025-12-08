@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
 	Dialog,
 	DialogTitle,
@@ -9,24 +9,13 @@ import {
 	ListItemText,
 	Typography,
 } from '@mui/material'
-
-export type Model = {
-	id: number
-	name: string
-	image?: string
-}
-
-export type Brand = {
-	id: number
-	label: string
-	models: Model[]
-}
+import type { Brand, Model } from '../../types/phone'
 
 type Props = {
 	open: boolean
 	onClose: () => void
 	brands: Brand[]
-	onSelect: (model: Model) => void
+    onSelect: (model: Model) => void
 }
 
 export default function PhoneSelectorDialog({

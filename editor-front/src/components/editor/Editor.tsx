@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
 	Button,
 	Typography,
@@ -8,7 +8,6 @@ import {
 	ListItemButton,
 	ListItemText,
 	IconButton,
-	Divider,
 	Stack,
 } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
@@ -65,7 +64,6 @@ function usePreloadImages(srcs: string[]) {
 }
 
 /* ---------- типы ---------- */
-type Model = { id: number; name: string; image?: string }
 
 type TextEl = {
 	id: number
@@ -105,12 +103,6 @@ type EditorProps = {
 export default function Editor({ model }: EditorProps) {
 	const STAGE_W = 420
 	const STAGE_H = 820
-
-	const [selectedModel] = useState<Model>({
-		id: 1,
-		name: 'iPhone 11',
-		image: '/mobile/iphone11.png',
-	})
 
 	// оставил any для ref чтобы не возникало проблем с типами react-konva в разных версиях
 	const stageRef = useRef<any>(null)
@@ -165,15 +157,6 @@ export default function Editor({ model }: EditorProps) {
 		}
 		reader.readAsDataURL(file)
 		e.currentTarget.value = ''
-	}
-
-	const handleExport = () => {
-		if (!stageRef.current) return
-		const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 })
-		const a = document.createElement('a')
-		a.href = dataURL
-		a.download = `${selectedModel?.name || 'preview'}.png`
-		a.click()
 	}
 
 	const updateElementById = (

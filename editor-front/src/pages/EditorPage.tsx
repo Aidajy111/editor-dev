@@ -2,20 +2,7 @@ import { useState } from 'react'
 import { Button } from '@mui/material'
 import Editor from '../components/editor/Editor'
 import PhoneSelectorDialog from '../components/PhoneSelectorDialog/PhoneSelectorDialog'
-
-export type Model = {
-	id: number
-	name: string
-	image: string
-	camera: string
-	edges: string
-}
-
-export type Brand = {
-	id: number
-	label: string
-	models: Model[]
-}
+import type { Brand, Model } from '../types/phone'
 
 // -------- data
 const BRANDS: Brand[] = [
