@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29cd545f-4499-48bc-bf17-4cc38b2afdb0" name="Changes" comment="Создание структуры для проекта">
-      <change beforePath="$PROJECT_DIR$/editor-front/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/editor-back/internal/db/db.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/editor-back/internal/models/models.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/editor-back/migrations/001_init.up.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor-back/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/editor-back/cmd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor-back/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/editor-back/go.mod" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,22 +35,22 @@
     &quot;assignee&quot;: &quot;Aidajy111&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Aidajy111/editor-dev.git",
-    "accountId": "b07edffc-8880-48bb-90da-10dfbfc400c1"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Aidajy111/editor-dev.git&quot;,
+    &quot;accountId&quot;: &quot;b07edffc-8880-48bb-90da-10dfbfc400c1&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Aidajy111",
-    "repository": "editor-dev"
+    &quot;owner&quot;: &quot;Aidajy111&quot;,
+    &quot;repository&quot;: &quot;editor-dev&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -60,6 +66,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Docker.docker-compose.dev.yml.frontend: Compose Deployment.executor&quot;: &quot;Run&quot;,
     &quot;Docker.editor-front/Dockerfile.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -78,6 +85,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -87,7 +95,7 @@
       <recent name="C:\rbsoft\editor-dev" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Docker.docker-compose.dev.yml.frontend: Compose Deployment">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="editor-dev" />
       <working_directory value="$PROJECT_DIR$" />
@@ -118,9 +126,28 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.dev.yml.frontend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="frontend" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.dev.yml" />
+        </settings>
       </deployment>
       <method v="2" />
     </configuration>
@@ -133,8 +160,20 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/editor-front/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.dev.yml.frontend: Compose Deployment" />
+        <item itemvalue="npm.dev" />
         <item itemvalue="Docker.editor-front/Dockerfile" />
       </list>
     </recent_temporary>
@@ -161,7 +200,19 @@
       <workItem from="1765093252781" duration="171000" />
       <workItem from="1765111764358" duration="330000" />
       <workItem from="1765178292831" duration="8000" />
-      <workItem from="1765193044439" duration="271000" />
+      <workItem from="1765193044439" duration="329000" />
+      <workItem from="1765278412003" duration="12427000" />
+      <workItem from="1765338587623" duration="27000" />
+      <workItem from="1765640333364" duration="20000" />
+      <workItem from="1765641154949" duration="5000" />
+      <workItem from="1765702470026" duration="6063000" />
+      <workItem from="1765789525975" duration="19000" />
+      <workItem from="1765881564289" duration="2406000" />
+      <workItem from="1765969867658" duration="14000" />
+      <workItem from="1766051905729" duration="8319000" />
+      <workItem from="1766087443894" duration="592000" />
+      <workItem from="1766137312671" duration="3295000" />
+      <workItem from="1766140954775" duration="2359000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -187,7 +238,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765193243021</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Создание структуры для проекта">
+      <option name="closed" value="true" />
+      <created>1765193326478</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1765193326478</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
