@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 
-	"github.com/Aidajy111/editor-dev/editor-back/internal/repository"
 	"github.com/Aidajy111/editor-dev/editor-back/internal/db"
 	"github.com/Aidajy111/editor-dev/editor-back/internal/http/handlers"
 	"github.com/Aidajy111/editor-dev/editor-back/internal/http/middleware"
+	"github.com/Aidajy111/editor-dev/editor-back/internal/repository"
 )
 
 func main() {

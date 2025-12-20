@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="29cd545f-4499-48bc-bf17-4cc38b2afdb0" name="Changes" comment="Создание структуры для проекта">
-      <change afterPath="$PROJECT_DIR$/editor-back/cmd/server/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/editor-back/internal/http/handlers/auth.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/editor-back/repository/user_repo.go" afterDir="false" />
+    <list default="true" id="29cd545f-4499-48bc-bf17-4cc38b2afdb0" name="Changes" comment="Сделал авторизацию и регистрацию">
+      <change afterPath="$PROJECT_DIR$/editor-back/internal/repository/user_repo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/editor-back/cmd/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor-back/cmd/server/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/editor-back/cmd/server/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/editor-back/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/editor-back/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor-back/internal/http/handlers/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/editor-back/internal/http/handlers/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/editor-back/repository/user_repo.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,14 +87,18 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.2.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\rbsoft\editor-dev\editor-back\cmd\server" />
+      <recent name="C:\rbsoft\editor-dev\editor-back" />
       <recent name="C:\rbsoft\editor-dev" />
+      <recent name="C:\rbsoft\editor-dev\.idea" />
+      <recent name="C:\rbsoft\editor-dev\editor-back\internal" />
+      <recent name="C:\rbsoft\editor-dev\editor-back\internal\http" />
     </key>
   </component>
   <component name="RunManager" selected="Docker.docker-compose.dev.yml.frontend: Compose Deployment">
@@ -212,7 +218,10 @@
       <workItem from="1766051905729" duration="8319000" />
       <workItem from="1766087443894" duration="592000" />
       <workItem from="1766137312671" duration="3295000" />
-      <workItem from="1766140954775" duration="19165000" />
+      <workItem from="1766140954775" duration="21968000" />
+      <workItem from="1766215970232" duration="224000" />
+      <workItem from="1766216659916" duration="17000" />
+      <workItem from="1766217126714" duration="296000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -254,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766146751586</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Сделал авторизацию и регистрацию">
+      <option name="closed" value="true" />
+      <created>1766213089140</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1766213089140</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -263,7 +280,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="Создание структуры для проекта" />
-    <option name="LAST_COMMIT_MESSAGE" value="Создание структуры для проекта" />
+    <MESSAGE value="Сделал авторизацию и регистрацию" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сделал авторизацию и регистрацию" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

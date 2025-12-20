@@ -5,24 +5,34 @@ services:
     image: postgres:16
     container_name: editor-db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: editor_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
 
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: editor-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
   backend:
-    build: ./editor-back
+    build:
+      context: ./editor-back
+      dockerfile: Dockerfile
     container_name: editor-back
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: editor
-      DB_PASSWORD: editorpass
-      DB_NAME: editor
-      PORT: 8080
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${PORT}
     depends_on:
       - db
     ports:

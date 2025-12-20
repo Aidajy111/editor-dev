@@ -11,12 +11,12 @@ import (
 )
 
 type AuthHandler struct {
-	Users *repository.UserRepo
+	Users     *repository.UserRepo
 	JWTSecret string
 }
 
 type authReq struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -39,14 +39,14 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.defaultCost)
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		http.Error(w, "hash error", http.StatusInternalServerError)
 		return
 	}
 
 	u, err := h.Users.Create(r.Context(), req.Email, string(hash))
-	if != nil {
+	if err != nil {
 		if err == repository.ErrEmailTaken {
 			http.Error(w, "email already used", http.StatusConflict)
 			return
