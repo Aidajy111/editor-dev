@@ -1,4 +1,4 @@
-module github.com/Aidajy111/editor-dev
+module github.com/Aidajy111/editor-dev/editor-back
 
 go 1.25.3
 
