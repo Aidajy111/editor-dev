@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:16
@@ -39,14 +37,14 @@ services:
       - "8080:8080"
 
   frontend:
-    build: ./editor-front
+    build:
+      context: ./editor-front
+      dockerfile: Dockerfile
     container_name: editor-front
     depends_on:
       - backend
     ports:
       - "3000:80"
-    # если фронт обращается к беку:
-    # REACT/VITE_BASE_URL=http://localhost:8080 или http://backend:8080
 
 volumes:
-  pgdata:
+  pg_data:

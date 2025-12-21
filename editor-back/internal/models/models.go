@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type Role string
 
 const (
