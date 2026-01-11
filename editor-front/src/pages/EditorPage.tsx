@@ -3,6 +3,9 @@ import { Button } from '@mui/material'
 import Editor from '../components/editor/Editor'
 import PhoneSelectorDialog from '../components/PhoneSelectorDialog/PhoneSelectorDialog'
 import type { Brand, Model } from '../types/phone'
+import { useCartStore } from '../store/cartStore'
+import type { CartItem } from '../types/cart'
+import { useNavigate } from 'react-router-dom'
 
 // -------- data
 const BRANDS: Brand[] = [
@@ -51,6 +54,8 @@ const BRANDS: Brand[] = [
 function EditorPage() {
 	const [open, setOpen] = useState(false)
 	const [selectedModel, setSelectedModel] = useState<Model | null>(null)
+	const addItem = useCartStore((s) => s.addItem)
+	const navigate = useNavigate()
 
 	return (
 		<div>
@@ -68,7 +73,18 @@ function EditorPage() {
 			/>
 
 			{selectedModel ? (
-				<Editor model={selectedModel} />
+				<Editor 
+					model={selectedModel} 
+					onAddToCart={(payload) => {
+					addItem({
+						id: crypto.randomUUID(),
+						model: payload.model,
+						elements: payload.elements,
+						previewAssetId: payload.previewAssetId,
+						createdAt: new Date().toISOString(),
+					})
+					}}
+	/>
 			) : (
 				<p style={{ marginTop: 20, color: '#666' }}>
 					Пожалуйста, выберите модель телефона
