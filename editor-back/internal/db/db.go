@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -17,5 +18,11 @@ func NewPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 	cfg.MinConns = 1
 	cfg.MaxConnLifetime = time.Hour
 
-	return pgxpool.NewWithConfig(ctx, cfg)
+	cfg.ConnConfig.RuntimeParams["application_name"] = "myapp"
+	cfg.ConnConfig.RuntimeParams["timezone"] = "UTC"
+	cfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	pool, err := pgxpool.NewWithConfig(ctx, cfg)
+
+	return pool, err
 }

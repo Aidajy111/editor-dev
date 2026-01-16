@@ -2,40 +2,46 @@ package models
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
-type Role string
-
-const (
-	RoleUser  Role = "user"
-	RoleAdmin Role = "admin"
-)
-
-// User - структура для
 type User struct {
-	ID           int64     `db:"id"`
-	Email        string    `db:"email"`
-	PasswordHash string    `db:"password_hash"`
-	Role         Role      `db:"role"`
-	CreatedAt    time.Time `db:"created_at"`
-	UpdatedAt    time.Time `db:"updated_at"`
+	ID           int       `json:"id"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"-"`
+	Role         string    `json:"role"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdateAt     time.Time `json:"update_at"`
 }
 
-type CaseStatus string
+type RegisterRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
-const (
-	CaseStatusPending  CaseStatus = "pending"
-	CaseStatusApproved CaseStatus = "approved"
-	CaseStatusRejected CaseStatus = "rejected"
-)
+type RegisterResponse struct {
+	Message string `json:"message"`
+	UserID  int64  `json:"user_id"`
+	Email   string `json:"email"`
+}
 
-type Case struct {
-	ID           int64     `db:"id"`
-	UserId       int64     `db:"user_id"`
-	PhoneModelID int64     `db:"phone_model_id"`
-	Status       int64     `db:"status"`
-	AdminComment *string   `db:"admin_comment"`
-	PreviewURL   *string   `db:"preview_url"`
-	CreatedAt    time.Time `db:"created_at"`
-	UpdatedAt    time.Time `db:"updated_at"`
+type Orders struct {
+	ID              uuid.UUID `json:"id"`
+	CustomerName    string    `json:"customer_name"`
+	CustomerEmail   string    `json:"customer_email"`
+	CustomerComment string    `json:"customer_comment"`
+	Status          string    `json:"status"`
+	CreatedAt       time.Time `json:"created_at"`
+}
+
+type Order_items struct {
+	ID             uuid.UUID  `json:"id"`
+	OrderID        string     `json:"order_id"`         // FK на orders.id
+	ModelID        string     `json:"model_id"`         // items[].model.id
+	PhoneModelName string     `json:"phone_model_name"` // items[].model.name
+	DesignJSON     DesignJSON `json:"design_json"`      // тоже структура
+	FileID         string     `json:"file_id"`          // по сути id папки /uploads/orders/FileID/preview/ и /asset/
+}
+type DesignJSON struct {
 }
