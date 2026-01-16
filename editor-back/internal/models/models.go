@@ -26,22 +26,74 @@ type RegisterResponse struct {
 	Email   string `json:"email"`
 }
 
-type Orders struct {
+type Order struct {
 	ID              uuid.UUID `json:"id"`
 	CustomerName    string    `json:"customer_name"`
 	CustomerEmail   string    `json:"customer_email"`
+	CustomerPhone   string    `json:"customer_phone"`
 	CustomerComment string    `json:"customer_comment"`
-	Status          string    `json:"status"`
+	Status          string    `json:"status"` // new, paid, in_production, done, canceled
 	CreatedAt       time.Time `json:"created_at"`
 }
 
-type Order_items struct {
-	ID             uuid.UUID  `json:"id"`
-	OrderID        string     `json:"order_id"`         // FK на orders.id
-	ModelID        string     `json:"model_id"`         // items[].model.id
-	PhoneModelName string     `json:"phone_model_name"` // items[].model.name
-	DesignJSON     DesignJSON `json:"design_json"`      // тоже структура
-	FileID         string     `json:"file_id"`          // по сути id папки /uploads/orders/FileID/preview/ и /asset/
+type OrderItems struct {
+	ID             uuid.UUID `json:"id"`
+	OrderID        uuid.UUID `json:"order_id"`         // FK на orders.id
+	ModelID        int       `json:"model_id"`         // items[].model.id
+	PhoneModelName string    `json:"phone_model_name"` // items[].model.name
+	DesignJSON     []byte    `json:"design_json"`      // Пока непонятно какие свойства тут, или просто в виде строки которую нужно парсить сделать
+	PreviewKey     string    `json:"preview_key"`      // путь/ключ до preview-файла
+	CreatedAt      time.Time `json:"created_at"`
 }
-type DesignJSON struct {
+
+type OrderAsset struct {
+	ID         uuid.UUID `json:"id"`
+	OrderID    uuid.UUID `json:"order_id"`
+	AssetID    string    `json:"asset_id"`    // тот самый assetId с фронта
+	StorageKey string    `json:"storage_key"` // куда сохранили на диске
+	Mime       string    `json:"mime"`
+	SizeBytes  int64     `json:"size_bytes"`
+}
+
+// Модель телеофна
+type ModelDTO struct {
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Image  string `json:"image"`
+	Camera string `json:"camera"`
+	Edges  string `json:"edges"`
+}
+
+// Элементы дизайна
+type ElementDTO struct {
+	ID           int64   `json:"id"`
+	Type         string  `json:"type"` // "image" | "text"
+	X            float64 `json:"x"`
+	Y            float64 `json:"y"`
+	Width        float64 `json:"width,omitempty"`
+	Height       float64 `json:"height,omitempty"`
+	Rotation     float64 `json:"rotation"`
+	AssetID      string  `json:"assetId,omitempty"`
+	Text         string  `json:"text,omitempty"`
+	FontFamily   string  `json:"fontFamily,omitempty"`
+	FontSize     float64 `json:"fontSize,omitempty"`
+	Fill         string  `json:"fill,omitempty"`
+	CornerRadius float64 `json:"cornerRadius,omitempty"`
+	FlipX        bool    `json:"flipX,omitempty"`
+	FlipY        bool    `json:"flipY,omitempty"`
+}
+
+type CustomerDTO struct {
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Phone   string `json:"phone"`
+	Comment string `json:"comment"`
+}
+
+type ItemDTO struct {
+	ID             string       `json:"id"`
+	Model          ModelDTO     `json:"model"`
+	Elements       []ElementDTO `json:"elements"`
+	PreviewAssetID string       `json:"previewAssetId"`
+	CreatedAt      time.Time    `json:"createdAt"`
 }
