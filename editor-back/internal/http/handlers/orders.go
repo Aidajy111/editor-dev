@@ -8,18 +8,21 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/Aidajy111/editor-dev/editor-back/internal/models"
+	"github.com/Aidajy111/editor-dev/editor-back/internal/repository"
 	"github.com/google/uuid"
 )
 
 type OrderHandler struct {
+	Order     *repository.OrderRepo
 	UploadDir string
 }
 
 type CreateOrderRequest struct {
 	Customer models.CustomerDTO
-	items    []models.ItemDTO
+	Items    []models.ItemDTO
 }
 
 var (
@@ -27,6 +30,9 @@ var (
 )
 
 func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
+	previewKeys := map[string]string{} // itemID -> preview path
+	assetKeys := map[string]string{}   // assetID -> asset path
+
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -57,62 +63,64 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := r.MultipartForm
-	// Создаем файл
-	for fileName, fileDate := range files.File {
-		if !strings.HasPrefix(fileName, "preview_") && !strings.HasPrefix(fileName, "asset_") {
-			continue
-		}
 
-		for _, oneFile := range fileDate {
+	for _, fileList := range files.File {
+		for _, oneFile := range fileList {
 			f, err := oneFile.Open()
 			if err != nil {
-				fmt.Printf("Error open file: %v\n", err)
-				http.Error(w, "Error open file ", http.StatusBadRequest)
+				http.Error(w, "Error open file", http.StatusBadRequest)
 				return
 			}
 
-			if strings.HasPrefix(fileName, "preview_") {
-				// создаем картинки preview_....jpg
-				//получаем id превью удаляя префикс в начале и в конце
-
+			filename := oneFile.Filename // тут лежит preview_... или asset_...
+			switch {
+			case strings.HasPrefix(filename, "preview_"):
 				if err := os.MkdirAll(DirStat+OrderId+"/preview/", 0755); err != nil {
-					fmt.Printf("Error create directory: %v\n", err)
 					http.Error(w, "Error create directory", http.StatusBadRequest)
+					return
 				}
 
-				file, err := os.Create(DirStat + OrderId + "/preview/" + fileName + filepath.Ext(oneFile.Filename))
+				dstPath := DirStat + OrderId + "/preview/" + filename
+				out, err := os.Create(dstPath)
 				if err != nil {
-					fmt.Printf("Error create file %s: %v\n", fileName, err)
 					http.Error(w, "Error create file", http.StatusBadRequest)
 					return
 				}
-				file.Close()
 
-				if _, err := io.Copy(file, f); err != nil {
-					fmt.Printf("Error copy file %s: %v\n", fileName, err)
+				if _, err := io.Copy(out, f); err != nil {
 					http.Error(w, "Error copy file", http.StatusBadRequest)
+					out.Close()
+					return
 				}
-			} else if strings.HasPrefix(fileName, "asset_") {
-				// создаем картинки asset_....png
+				out.Close()
 
+				itemID := strings.TrimPrefix(strings.TrimSuffix(filename, filepath.Ext(filename)), "preview_")
+				previewKeys[itemID] = dstPath
+
+			case strings.HasPrefix(filename, "asset_"):
 				if err := os.MkdirAll(DirStat+OrderId+"/asset/", 0755); err != nil {
-					fmt.Printf("Error create directory asset: %v\n", err)
 					http.Error(w, "Error create directory asset", http.StatusBadRequest)
+					return
 				}
 
-				file, err := os.Create(DirStat + OrderId + "/asset/" + fileName + filepath.Ext(oneFile.Filename))
+				dstPath := DirStat + OrderId + "/asset/" + filename
+				out, err := os.Create(dstPath)
 				if err != nil {
-					fmt.Printf("Error create file %s asset: %v\n", fileName, err)
 					http.Error(w, "Error create file asset", http.StatusBadRequest)
 					return
 				}
-				file.Close()
 
-				if _, err := io.Copy(file, f); err != nil {
-					fmt.Printf("Error copy file %s asset: %v\n", fileName, err)
+				if _, err := io.Copy(out, f); err != nil {
 					http.Error(w, "Error copy file asset", http.StatusBadRequest)
+					out.Close()
+					return
 				}
+				out.Close()
+
+				assetID := strings.TrimPrefix(strings.TrimSuffix(filename, filepath.Ext(filename)), "asset_")
+				assetKeys[assetID] = dstPath
 			}
+
 			f.Close()
 		}
 	}
@@ -120,12 +128,66 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 	// Далее сохранить спарсенные данные в бд. Сделать insert запрос где будут
 	// относительные ссылки и другие данные с уже готовых структур в modules ...
 	// ...
-	// 7. Отправляем ответ
+
+	ctx := r.Context()
+
+	order := models.Order{
+		ID:              uuid.New(),
+		CustomerName:    req.Customer.Name,
+		CustomerEmail:   req.Customer.Email,
+		CustomerPhone:   req.Customer.Phone,
+		CustomerComment: req.Customer.Comment,
+		Status:          "new",
+		CreatedAt:       time.Now(),
+	}
+
+	items := make([]models.OrderItems, 0, len(req.Items))
+	assets := make([]models.OrderAsset, 0)
+
+	for _, item := range req.Items {
+		itemID := uuid.New()
+
+		previewPath := previewKeys[item.ID]
+		designJSON, _ := json.Marshal(item.Elements)
+
+		items = append(items, models.OrderItems{
+			ID:             itemID,
+			OrderID:        order.ID,
+			ModelID:        item.Model.ID,
+			PhoneModelName: item.Model.Name,
+			DesignJSON:     designJSON,
+			PreviewKey:     previewPath,
+			CreatedAt:      time.Now(),
+		})
+
+		for _, el := range item.Elements {
+			if el.Type != "image" || el.AssetID == "" {
+				continue
+			}
+
+			assetPath := assetKeys[el.AssetID]
+			assets = append(assets, models.OrderAsset{
+				ID:          uuid.New(),
+				OrderItemID: itemID,
+				AssetID:     el.AssetID,
+				StorageKey:  assetPath,
+				Mime:        "image/*",
+				SizeBytes:   0,
+			})
+		}
+	}
+
+	savedOrder, err := h.Order.CreateOrder(ctx, order, items, assets)
+	if err != nil {
+		http.Error(w, "failed to create order", http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":  "success",
 		"message": "Order created",
-		"orderId": 123,
+		"orderId": savedOrder.ID,
 	})
 }

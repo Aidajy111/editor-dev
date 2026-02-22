@@ -39,23 +39,23 @@ type Order struct {
 type OrderItems struct {
 	ID             uuid.UUID `json:"id"`
 	OrderID        uuid.UUID `json:"order_id"`         // FK на orders.id
-	ModelID        int       `json:"model_id"`         // items[].model.id
+	ModelID        int       `json:"model_id"`         // items[].model.id. Это id ModelDTO
 	PhoneModelName string    `json:"phone_model_name"` // items[].model.name
-	DesignJSON     []byte    `json:"design_json"`      // Пока непонятно какие свойства тут, или просто в виде строки которую нужно парсить сделать
+	DesignJSON     []byte    `json:"jsonb"`            // Пока непонятно какие свойства тут, или просто в виде строки которую нужно парсить сделать
 	PreviewKey     string    `json:"preview_key"`      // путь/ключ до preview-файла
 	CreatedAt      time.Time `json:"created_at"`
 }
 
 type OrderAsset struct {
-	ID         uuid.UUID `json:"id"`
-	OrderID    uuid.UUID `json:"order_id"`
-	AssetID    string    `json:"asset_id"`    // тот самый assetId с фронта
-	StorageKey string    `json:"storage_key"` // куда сохранили на диске
-	Mime       string    `json:"mime"`
-	SizeBytes  int64     `json:"size_bytes"`
+	ID          uuid.UUID `json:"id"`            // нужно ли это?
+	OrderItemID uuid.UUID `json:"order_item_id"` // FK на OrderItems
+	AssetID     string    `json:"asset_id"`      // тот самый assetId с фронта
+	StorageKey  string    `json:"storage_key"`   // куда сохранили на диске
+	Mime        string    `json:"mime"`
+	SizeBytes   int64     `json:"size_bytes"`
 }
 
-// Модель телеофна
+// Модель телеофна - структура для входа и выхода
 type ModelDTO struct {
 	ID     int    `json:"id"`
 	Name   string `json:"name"`
@@ -64,7 +64,7 @@ type ModelDTO struct {
 	Edges  string `json:"edges"`
 }
 
-// Элементы дизайна
+// Элементы дизайна - структура для входа и выхода
 type ElementDTO struct {
 	ID           int64   `json:"id"`
 	Type         string  `json:"type"` // "image" | "text"
@@ -83,6 +83,7 @@ type ElementDTO struct {
 	FlipY        bool    `json:"flipY,omitempty"`
 }
 
+// структура для входа и выхода
 type CustomerDTO struct {
 	Name    string `json:"name"`
 	Email   string `json:"email"`
@@ -90,6 +91,7 @@ type CustomerDTO struct {
 	Comment string `json:"comment"`
 }
 
+// структура для входа и выхода
 type ItemDTO struct {
 	ID             string       `json:"id"`
 	Model          ModelDTO     `json:"model"`
