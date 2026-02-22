@@ -64,15 +64,10 @@
 - **PostgreSQL** — основная БД
 - HTTP-фреймворк (на выбор):
     - [Gin](https://github.com/gin-gonic/gin) — простой и популярный
-    - или [Fiber](https://github.com/gofiber/fiber) / [Echo](https://github.com/labstack/echo) — тоже хорошие варианты
 - Доступ к БД:
-    - [pgx](https://github.com/jackc/pgx) или
-    - [GORM](https://gorm.io) — если хочется ORM
+    - [pgx](https://github.com/jackc/pgx) 
+    - [GORM](https://gorm.io) 
 - Авторизация:
     - JWT (через `github.com/golang-jwt/jwt/v5`)
 - Миграции:
-    - `golang-migrate` или `goose`W
-
----
-
-### Пример структуры проекта (Go)
+    - `golang-migrate` 
