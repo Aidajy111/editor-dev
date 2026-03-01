@@ -35,8 +35,6 @@ CREATE TABLE IF NOT EXISTS cases (
     updated_at     TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-
-
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  -- UUID с авто-генерацией
     email TEXT UNIQUE NOT NULL,

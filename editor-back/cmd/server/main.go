@@ -14,6 +14,7 @@ import (
 	"github.com/Aidajy111/editor-dev/editor-back/internal/migrates"
 	"github.com/Aidajy111/editor-dev/editor-back/internal/repository"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -54,15 +55,31 @@ func main() {
 
 	usersRepo := repository.NewUserRepo(pool)
 	authH := &handlers.AuthHandler{Users: usersRepo, JWTSecret: jwtSecret}
+
+	// Инициализация Redis
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379", // Адрес сервера Redis
+		Password: "",               // Пароль (если установлен)
+		DB:       0,                // Используемая база данных
+	})
+	_, err = redisClient.Ping(ctx).Result()
+	if err != nil {
+		fmt.Println("Ошибка подключения к Redis:", err)
+		return
+	}
+	fmt.Println("Подключение к Redis успешно")
+
+	orderRepo := repository.NewOrderRepo(pool, redisClient)
 	uploadDir := "/uploads"
-	orderHandler := &handlers.OrderHandler{UploadDir: uploadDir}
+	orderHandler := &handlers.OrderHandler{Order: orderRepo, UploadDir: uploadDir}
 
 	mux := http.NewServeMux()
 
-	// публичные ручки
+	// публичные маршруты
 	mux.HandleFunc("POST /api/auth/register", authH.Register)
 	mux.HandleFunc("POST /api/auth/login", authH.Login)
 	mux.HandleFunc("POST /api/orders", orderHandler.CreateOrder)
+	mux.HandleFunc("GET /api/orders/{id}", orderHandler.GetOrder)
 
 	// Защищенные маршруты
 	protected := http.NewServeMux()

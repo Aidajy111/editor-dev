@@ -41,7 +41,7 @@ type OrderItems struct {
 	OrderID        uuid.UUID `json:"order_id"`         // FK на orders.id
 	ModelID        int       `json:"model_id"`         // items[].model.id. Это id ModelDTO
 	PhoneModelName string    `json:"phone_model_name"` // items[].model.name
-	DesignJSON     []byte    `json:"jsonb"`            // Пока непонятно какие свойства тут, или просто в виде строки которую нужно парсить сделать
+	DesignJSON     []byte    `json:"design_json"`      // Пока непонятно какие свойства тут, или просто в виде строки которую нужно парсить сделать
 	PreviewKey     string    `json:"preview_key"`      // путь/ключ до preview-файла
 	CreatedAt      time.Time `json:"created_at"`
 }
@@ -98,4 +98,35 @@ type ItemDTO struct {
 	Elements       []ElementDTO `json:"elements"`
 	PreviewAssetID string       `json:"previewAssetId"`
 	CreatedAt      time.Time    `json:"createdAt"`
+}
+
+// Структуры для входы и выхода для Redis Ответов
+type OrderAssetRedis struct {
+	ID          uuid.UUID `json:"id"`
+	OrderItemID uuid.UUID `json:"order_item_id"`
+	AssetID     string    `json:"asset_id"`
+	StorageKey  string    `json:"storage_key"`
+	Mime        string    `json:"mime"`
+	SizeBytes   int64     `json:"size_bytes"`
+}
+
+type OrderItemsRedis struct {
+	ID             uuid.UUID         `json:"id"`
+	OrderID        uuid.UUID         `json:"order_id"`
+	ModelID        int               `json:"model_id"`
+	PhoneModelName string            `json:"phone_model_name"`
+	DesignJSON     []byte            `json:"jsonb"`
+	PreviewKey     string            `json:"preview_key"`
+	Assets         []OrderAssetRedis `json:"assets"`
+}
+
+type OrderBodyRedis struct {
+	ID              uuid.UUID         `json:"id"`
+	CustomerName    string            `json:"customer_name"`
+	CustomerEmail   string            `json:"customer_email"`
+	CustomerPhone   string            `json:"customer_phone"`
+	CustomerComment string            `json:"customer_comment"`
+	Status          string            `json:"status"`
+	CreatedAt       time.Time         `json:"created_at"`
+	Items           []OrderItemsRedis `json:"items"`
 }

@@ -46,7 +46,7 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to parse form", http.StatusBadRequest)
 		return
 	}
-	// 2. Получаем JSON данные из поля "payload"
+	// Получаем JSON данные из поля "payload"
 
 	payload := r.FormValue("payload")
 	fmt.Println("=== INCOMING ORDER REQUEST ===")
